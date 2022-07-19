@@ -1,0 +1,11 @@
+{
+    "Lua.runtime.version": "LuaJIT",
+    "Lua.workspace.library": [
+        "${3rd}/love2d/library"
+    ],
+    // "Win": {
+    //     "key": "Alt+L", 
+    //     "command":"pixelbyte.love2d.run"
+    // },
+    "Lua.workspace.checkThirdParty": false
+}
