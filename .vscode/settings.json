@@ -10,5 +10,8 @@
     "Lua.workspace.checkThirdParty": false,
     "Lua.diagnostics.globals": [
         "meteoro"
+    ],
+    "Lua.diagnostics.disable": [
+        "redundant-parameter"
     ]
 }
