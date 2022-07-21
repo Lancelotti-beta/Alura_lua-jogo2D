@@ -65,7 +65,8 @@ nave = {
     altura = 63,
     largura = 55,
     x = LARGURA_DA_TELA/2 - 64/2,
-    y = ALTURA_DA_TELA - 70
+    y = ALTURA_DA_TELA - 70,
+    arma = {}
 }
 
 function destroiNave()
@@ -90,7 +91,25 @@ function moveNaveDoJogador()
     end
 end
 
-function disparar()
+function prepararDisparo()
+    local disparo = {
+        x = nave.x + nave.largura/2,
+        y = nave.y - nave.altura/4,
+        altura = 16,
+        largura = 16
+    }
+
+    table.insert(nave.arma, disparo)
+end
+
+function dispararTiro()
+    for i = #nave.arma, 1, -1 do
+        if nave.arma[i].y > 0 then
+            nave.arma[i].y = nave.arma[i].y - 2
+        else
+            table.remove(nave.arma, i)
+        end
+    end
 
 end
 
@@ -107,7 +126,7 @@ function love.load()
     background = love.graphics.newImage('img/background.png')
     meteoro_img = love.graphics.newImage('img/meteoro.png')
     
-    desparoDaNave = love.graphics.newImage('img/tiro.png')
+    disparoDaNave = love.graphics.newImage('img/tiro.png')
     nave.img = love.graphics.newImage(nave.src)
 
     -- Sons do jogo
@@ -136,7 +155,10 @@ function love.update(dt)
 
         colidiu() 
     end
-    
+
+    -- Tiro da Nave
+    dispararTiro()
+
     --Movimentos da ia
     removeMeteoro()
     if #objetos < math.random(#MAX_OBJETOS_INIMIGOS) then
@@ -151,19 +173,21 @@ function love.keypressed(tecla)
     if tecla == 'escape' then
         love.event.quit()
     elseif (tecla == 'space') or (tecla == 'z') then
-        disparar()
+        prepararDisparo()
     end
 end
 
 
 function love.draw()
     love.graphics.draw(background, 0, 0)
+
     love.graphics.draw(nave.img, nave.x, nave.y)
 
     for i, meteoro in pairs(objetos) do
         love.graphics.draw(meteoro_img, meteoro.x, meteoro.y)
     end
 
+    for i, disparo in pairs(nave.arma) do
+        love.graphics.draw(disparoDaNave, disparo.x, disparo.y)
+    end
 end
-
-
